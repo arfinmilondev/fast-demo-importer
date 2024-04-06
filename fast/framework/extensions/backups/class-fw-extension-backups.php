@@ -124,12 +124,7 @@ class FW_Extension_Backups extends FW_Extension {
 			return false;
 		} else {
 			return sprintf(
-				__('Oops, %s requires %s but it is not enabled on your server. If you are not familiar with PHP Zip module, please contact your hosting provider.', 'fw'),
-				fw_html_tag('a', array(
-					'href' => function_exists('menu_page_url')
-						? menu_page_url(fw()->extensions->manager->get_page_slug(), false) .'#ext-backups'
-						: '#',
-				), __('Fast Backup', 'fw')),
+				__('requires %s but it is not enabled on your server. If you are not familiar with PHP Zip module, please contact your hosting provider.', 'fw'),
 				fw_html_tag('a', array(
 					'href' => 'https://www.google.com/search#q=hosting+enable+php+zip',
 					'target' => '_blank',

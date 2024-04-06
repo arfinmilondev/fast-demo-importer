@@ -5,6 +5,7 @@ if (! defined('FW')) { die('Forbidden'); }
 class FW_Option_Type_Icon_v2 extends FW_Option_Type {
 	private $enqueued_font_styles = array();
 	public $packs_loader = null;
+	public $favorites = null;
 
 	public function get_type() {
 		return 'icon-v2';
