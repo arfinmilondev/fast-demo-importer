@@ -107,8 +107,15 @@ class FW_Extension_Backups_Demo extends FW_Extension
 		) {
 			return;
 		}
-		add_submenu_page(
-			'themes.php',
+		// add_submenu_page(
+		// 	'themes.php',
+		// 	__('Fast Demo Content Import', 'fw'),
+		// 	__('Fast Demo Content Import', 'fw'),
+		// 	self::backups()->get_capability(),
+		// 	$this->get_page_slug(),
+		// 	array($this, '_display_page')
+		// );
+		add_management_page(
 			__('Fast Demo Content Import', 'fw'),
 			__('Fast Demo Content Import', 'fw'),
 			self::backups()->get_capability(),
@@ -127,7 +134,7 @@ class FW_Extension_Backups_Demo extends FW_Extension
 		if (function_exists('is_wpe_snapshot') && !is_wpe_snapshot()) {
 			echo '<div class="error"><p>',
 			sprintf(
-				esc_html__('Fast Demo Content Import works only in %s.', 'fw'),
+				esc_html__('Demo Content Import works only in %s.', 'fw'),
 				'<a href="' . esc_attr(admin_url('admin.php?page=wpengine-staging')) . '">'
 					. esc_html__('Staging', 'fw')
 					. '</a>'
@@ -435,7 +442,7 @@ class FW_Extension_Backups_Demo extends FW_Extension
 			$collection = self::backups()->tasks()->add_backup_tasks($collection);
 		}
 
-		$collection->set_title(__('Fast Demo Content Import', 'fw'));
+		$collection->set_title(__('Demo Content Import', 'fw'));
 
 		$collection->add_task(new FW_Ext_Backups_Task(
 			$id_prefix . 'tmp-dir-clean:before',
