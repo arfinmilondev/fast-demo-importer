@@ -3,7 +3,7 @@
  * Plugin Name: Fast Demo Importer
  * Description: Demo Importer plugin, please uninstall this plugin after you've finished importing demo contents.
  * Author: FastDemo Team
- * Version: 2.0.0
+ * Version: 2.1.0
  */
 
 if (is_admin() && !defined('FW')) {

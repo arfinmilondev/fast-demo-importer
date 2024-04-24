@@ -197,7 +197,7 @@ function fw_ext_backups_unzip_partial($zip, $destination_dir, $last_entry = '', 
 		);
 	}
 
-	if (!is_resource($zip) && !is_resource($zip = zip_open($zip))) {
+	if (!is_resource($zip) && !is_resource($zip = @zip_open($zip))) {
 		return new WP_Error(
 			'cannot_open_zip', sprintf(__('Cannot open zip (Error code: %s)', 'fw'), $zip)
 		);
@@ -211,13 +211,13 @@ function fw_ext_backups_unzip_partial($zip, $destination_dir, $last_entry = '', 
 
 	if ($last_entry) {
 		while(
-			($entry = zip_read($zip))
+			($entry = @zip_read($zip))
 			&&
-			zip_entry_name($entry) !== $last_entry
+			@zip_entry_name($entry) !== $last_entry
 		);
 
 		if (!$entry) {
-			zip_close($zip);
+			@zip_close($zip);
 			return new WP_Error(
 				'entry_restore_fail',
 				sprintf(__('Cannot restore previous zip entry: %s', 'fw'), $last_entry)
@@ -234,12 +234,12 @@ function fw_ext_backups_unzip_partial($zip, $destination_dir, $last_entry = '', 
 	$max_time = time() + $timeout;
 
 	while (time() < $max_time) {
-		if (!($entry = zip_read($zip))) {
+		if (!($entry = @zip_read($zip))) {
 			$result['finished'] = true;
 			return $result;
 		}
 
-		$name = zip_entry_name($entry);
+		$name = @zip_entry_name($entry);
 
 		if (substr($name, -1) === '/') {
 			continue; // it is a directory
@@ -252,7 +252,7 @@ function fw_ext_backups_unzip_partial($zip, $destination_dir, $last_entry = '', 
 			&&
 			!mkdir($dest_dir, 0777, true)
 		) {
-			zip_close($zip);
+			@zip_close($zip);
 			return new WP_Error(
 				'mkdir_fail',
 				sprintf(__('Cannot create directory: %s', 'fw'), $dest_dir)
@@ -260,22 +260,22 @@ function fw_ext_backups_unzip_partial($zip, $destination_dir, $last_entry = '', 
 		}
 
 		if (false === ($unzipped = fopen($destination_path, 'wb'))) {
-			zip_close($zip);
+			@zip_close($zip);
 			return new WP_Error(
 				'fopen_fail',
 				sprintf(__('Cannot create file: %s', 'fw'), $destination_path)
 			);
 		}
 
-		$size = zip_entry_filesize($entry);
+		$size = @zip_entry_filesize($entry);
 
 		while ($size > 0) {
 			$chunk_size = min($size, 10240);
 			$size -= $chunk_size;
 
-			if (false === ($chunk = zip_entry_read($entry, $chunk_size))) {
+			if (false === ($chunk = @zip_entry_read($entry, $chunk_size))) {
 				fclose($unzipped);
-				zip_close($zip);
+				@zip_close($zip);
 				return new WP_Error(
 					'zip_entry_read_fail',
 					sprintf(__('Cannot read chunk from zip entry: %s', 'fw'), $name)
@@ -286,7 +286,7 @@ function fw_ext_backups_unzip_partial($zip, $destination_dir, $last_entry = '', 
 		}
 
 		if (false === fclose($unzipped)) {
-			zip_close($zip);
+			@zip_close($zip);
 			return new WP_Error(
 				'fclose_fail',
 				sprintf(__('Cannot close file: %s', 'fw'), $destination_path)
